@@ -1,0 +1,26 @@
+# Thermal Printer Python - Dipendenze
+# =====================================
+#
+# Installa tutte le dipendenze con:
+#   pip install -r requirements.txt
+
+# Templating
+jinja2>=3.1.0
+
+# Manipolazione immagini
+Pillow>=10.0.0
+
+# Rendering HTML -> Immagine
+html2image>=2.0.0
+
+# Opzionale: Selenium (alternativa a html2image)
+# selenium>=4.0.0
+
+# Backend stampante - Seriale
+pyserial>=3.5
+
+# Backend stampante - USB
+pyusb>=1.2.1
+
+# Utilities
+dataclasses>=0.6; python_version < '3.7'
