@@ -82,16 +82,25 @@ export function TemplateBuilder() {
           align: 'left',
           fontSize: 12,
           fontFamily: 'Arial, sans-serif',
-          color: '#000000'
+          fontWeight: '400',
+          color: '#000000',
+          useGradient: false,
+          gradientStart: '#000000',
+          gradientEnd: '#666666',
+          gradientDirection: 'to right'
         }
       case 'heading':
         return {
           content: 'Titolo',
           align: 'center',
           fontSize: 18,
-          bold: true,
           fontFamily: 'Arial, sans-serif',
-          color: '#000000'
+          fontWeight: '700',
+          color: '#000000',
+          useGradient: false,
+          gradientStart: '#000000',
+          gradientEnd: '#666666',
+          gradientDirection: 'to right'
         }
       case 'table':
         return {
@@ -121,7 +130,11 @@ export function TemplateBuilder() {
           borderStyle: 'solid',
           borderColor: '#000000',
           backgroundColor: '#ffffff',
-          borderRadius: 4
+          borderRadius: 4,
+          useGradient: false,
+          gradientStart: '#ffffff',
+          gradientEnd: '#cccccc',
+          gradientDirection: 'to right'
         }
       default:
         return {}
@@ -146,12 +159,20 @@ export function TemplateBuilder() {
 
     components.forEach((comp) => {
       switch (comp.type) {
-        case 'text':
-          html += `  <p style="text-align: ${comp.props.align}; font-size: ${comp.props.fontSize}px; font-family: ${comp.props.fontFamily}; color: ${comp.props.color}; margin: 8px 0;">${comp.props.content}</p>\n`
+        case 'text': {
+          const colorStyle = comp.props.useGradient
+            ? `background: linear-gradient(${comp.props.gradientDirection}, ${comp.props.gradientStart}, ${comp.props.gradientEnd}); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;`
+            : `color: ${comp.props.color};`
+          html += `  <p style="text-align: ${comp.props.align}; font-size: ${comp.props.fontSize}px; font-family: ${comp.props.fontFamily}; font-weight: ${comp.props.fontWeight}; ${colorStyle} margin: 8px 0;">${comp.props.content}</p>\n`
           break
-        case 'heading':
-          html += `  <h1 style="text-align: ${comp.props.align}; font-size: ${comp.props.fontSize}px; font-family: ${comp.props.fontFamily}; color: ${comp.props.color}; font-weight: ${comp.props.bold ? 'bold' : 'normal'}; margin: 10px 0;">${comp.props.content}</h1>\n`
+        }
+        case 'heading': {
+          const colorStyle = comp.props.useGradient
+            ? `background: linear-gradient(${comp.props.gradientDirection}, ${comp.props.gradientStart}, ${comp.props.gradientEnd}); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;`
+            : `color: ${comp.props.color};`
+          html += `  <h1 style="text-align: ${comp.props.align}; font-size: ${comp.props.fontSize}px; font-family: ${comp.props.fontFamily}; font-weight: ${comp.props.fontWeight}; ${colorStyle} margin: 10px 0;">${comp.props.content}</h1>\n`
           break
+        }
         case 'table':
           html += '  <table style="width: 100%; border-collapse: collapse; margin: 10px 0;">\n'
           comp.props.rows.forEach((row: string[], i: number) => {
@@ -178,9 +199,13 @@ export function TemplateBuilder() {
           // Per le icone, usiamo un simbolo Unicode o emoji come placeholder
           html += `  <div style="text-align: ${comp.props.align}; font-size: ${comp.props.size}px; color: ${comp.props.color}; margin: 10px 0;">★</div>\n`
           break
-        case 'decorator':
-          html += `  <div style="padding: ${comp.props.padding}px; border: ${comp.props.borderWidth}px ${comp.props.borderStyle} ${comp.props.borderColor}; background-color: ${comp.props.backgroundColor}; border-radius: ${comp.props.borderRadius}px; margin: 10px 0;">${comp.props.content}</div>\n`
+        case 'decorator': {
+          const bgStyle = comp.props.useGradient
+            ? `background: linear-gradient(${comp.props.gradientDirection}, ${comp.props.gradientStart}, ${comp.props.gradientEnd});`
+            : `background-color: ${comp.props.backgroundColor};`
+          html += `  <div style="padding: ${comp.props.padding}px; border: ${comp.props.borderWidth}px ${comp.props.borderStyle} ${comp.props.borderColor}; ${bgStyle} border-radius: ${comp.props.borderRadius}px; margin: 10px 0;">${comp.props.content}</div>\n`
           break
+        }
       }
     })
 

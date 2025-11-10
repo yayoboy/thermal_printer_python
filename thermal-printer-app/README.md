@@ -12,10 +12,12 @@ App Electron con drag & drop builder per stampanti termiche ESC/POS.
 - ✅ **shadcn-ui** - UI moderna e componenti React
 - ✅ **TypeScript** - Type-safe development
 - ✅ **8 Font Families** - Arial, Times, Courier, Georgia, Verdana, Comic Sans, Impact, Trebuchet
-- ✅ **20+ Icone** - Lucide icons con picker visuale
+- ✅ **Font Weight Selector** - 9 pesi da Thin (100) a Black (900)
+- ✅ **100+ Icone** - Lucide icons organizzate in 12 categorie
 - ✅ **Upload Immagini** - Carica file o usa URL
 - ✅ **Decoratori** - Box con bordi, colori, padding personalizzabili
-- ✅ **Color Pickers** - Selezione colori per testi, icone, bordi
+- ✅ **Gradient Support** - Gradienti per testi, titoli e sfondi
+- ✅ **Color Pickers** - Selezione colori per testi, icone, bordi, gradienti
 
 ---
 
@@ -71,20 +73,22 @@ Troverai l'app compilata in `release/`
 
 1. Vai su **Template Builder**
 2. Trascina componenti dalla palette:
-   - **Titolo** - Testo grande con font e colore personalizzabili
-   - **Testo** - Paragrafo con 8 font disponibili e color picker
-   - **Icona** - 20+ icone Lucide (Heart, Star, ShoppingCart, User, etc.)
+   - **Titolo** - Testo grande con font, peso e colore/gradient personalizzabili
+   - **Testo** - Paragrafo con 8 font, 9 pesi, color picker o gradient
+   - **Icona** - 100+ icone Lucide organizzate in 12 categorie
    - **Immagine** - Upload file o URL immagine
    - **Tabella** - Dati strutturati in colonne
    - **Separatore** - Linea orizzontale con spessore e colore
-   - **Box Decorato** - Contenitore con bordi e background personalizzabili
+   - **Box Decorato** - Contenitore con bordi e background/gradient personalizzabili
    - **Barcode** - Codice a barre simulato
 3. Clicca su un componente per modificarne le proprietà:
    - **Font**: Scegli tra 8 famiglie di font
-   - **Colore**: Color picker + hex input
+   - **Font Weight**: 9 pesi da Thin (100) a Black (900)
+   - **Colore**: Color picker + hex input o Gradient a 2 colori
+   - **Gradient**: Direzione (orizzontale, verticale, diagonale)
    - **Allineamento**: Sinistra, centro, destra
    - **Dimensioni**: Font size, padding, bordi
-   - **Stili**: Bold, border style, border radius
+   - **Stili**: Border style, border radius
 4. Riordina trascinando i componenti
 5. Clicca **Preview** per vedere l'anteprima
 6. Clicca **HTML** per vedere il codice generato
@@ -120,21 +124,28 @@ Troverai l'app compilata in `release/`
 
 **Personalizzazione:**
 - Selezione font da dropdown
-- Color picker con anteprima
+- **Font Weight**: 9 opzioni da Thin (100) a Black (900)
+- Color picker con anteprima o **Gradient** a 2 colori
 - Hex color input (#000000 - #ffffff)
+- **Direzione Gradient**: Orizzontale, Verticale, Diagonale
 - Dimensione font (8px - 72px)
 - Allineamento (left/center/right)
 
 ### ✨ Icone
 
-**20+ Icone Lucide disponibili:**
-- Heart, Star, Check, X
-- AlertCircle, Info
-- ShoppingCart, CreditCard, DollarSign
-- User, Mail, Phone
-- Home, Settings, Search
-- Calendar, Clock, MapPin
-- Gift, Truck
+**100+ Icone Lucide organizzate in 12 categorie:**
+- **Comune**: Heart, Star, Check, X, Plus, Minus, AlertCircle, Info, AlertTriangle, Circle, Square, Triangle
+- **Shopping**: ShoppingCart, ShoppingBag, CreditCard, DollarSign, Euro, Tag, Gift, Package, Ticket
+- **Comunicazione**: Mail, Phone, MessageCircle, MessageSquare, Send, Inbox, PhoneCall
+- **Persone**: User, Users, UserPlus, UserCheck, UserX, Baby, Smile
+- **Navigazione**: Home, MapPin, Map, Navigation, Compass, Flag, Target, Arrow (Up/Down/Left/Right)
+- **Data & Ora**: Calendar, Clock, Watch, Timer, Hourglass, Sun, Moon
+- **Business**: Briefcase, Building, Store, Warehouse, Factory
+- **Cibo**: Coffee, Pizza, Wine, Beer, Utensils, Cookie
+- **Trasporti**: Truck, Car, Plane, Ship, Bus, Bike, Train
+- **Tech**: Settings, Search, Download, Upload, Wifi, Bluetooth, Battery, Power, Zap, Globe
+- **Social**: ThumbsUp, ThumbsDown, Award, Trophy, Medal, Crown
+- **Altro**: Key, Lock, Eye, Bell, Music, Camera, Image, Film, Book, Bookmark, Newspaper
 
 **Proprietà:**
 - Picker visuale con anteprima icone
@@ -164,7 +175,8 @@ Troverai l'app compilata in `release/`
   - Spessore (0-10px)
   - Stile: Solido, Tratteggiato, Punteggiato, Doppio
   - Colore con picker
-- **Background**: Color picker per sfondo
+- **Background**: Color picker per sfondo o **Gradient** a 2 colori
+- **Direzione Gradient**: Orizzontale, Verticale, Diagonale
 - **Border Radius**: Angoli arrotondati (0-20px)
 
 **Casi d'uso:**

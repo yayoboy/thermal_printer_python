@@ -36,33 +36,52 @@ export function SortableComponent({
 
   const renderComponent = () => {
     switch (component.type) {
-      case 'text':
+      case 'text': {
+        const textStyle: React.CSSProperties = {
+          textAlign: component.props.align,
+          fontSize: component.props.fontSize,
+          fontFamily: component.props.fontFamily,
+          fontWeight: component.props.fontWeight || '400',
+        }
+
+        if (component.props.useGradient) {
+          textStyle.background = `linear-gradient(${component.props.gradientDirection}, ${component.props.gradientStart}, ${component.props.gradientEnd})`
+          textStyle.WebkitBackgroundClip = 'text'
+          textStyle.WebkitTextFillColor = 'transparent'
+          textStyle.backgroundClip = 'text'
+        } else {
+          textStyle.color = component.props.color
+        }
+
         return (
-          <p
-            style={{
-              textAlign: component.props.align,
-              fontSize: component.props.fontSize,
-              fontFamily: component.props.fontFamily,
-              color: component.props.color,
-            }}
-          >
+          <p style={textStyle}>
             {component.props.content}
           </p>
         )
-      case 'heading':
+      }
+      case 'heading': {
+        const headingStyle: React.CSSProperties = {
+          textAlign: component.props.align,
+          fontSize: component.props.fontSize,
+          fontFamily: component.props.fontFamily,
+          fontWeight: component.props.fontWeight || '700',
+        }
+
+        if (component.props.useGradient) {
+          headingStyle.background = `linear-gradient(${component.props.gradientDirection}, ${component.props.gradientStart}, ${component.props.gradientEnd})`
+          headingStyle.WebkitBackgroundClip = 'text'
+          headingStyle.WebkitTextFillColor = 'transparent'
+          headingStyle.backgroundClip = 'text'
+        } else {
+          headingStyle.color = component.props.color
+        }
+
         return (
-          <h1
-            style={{
-              textAlign: component.props.align,
-              fontSize: component.props.fontSize,
-              fontFamily: component.props.fontFamily,
-              color: component.props.color,
-              fontWeight: component.props.bold ? 'bold' : 'normal',
-            }}
-          >
+          <h1 style={headingStyle}>
             {component.props.content}
           </h1>
         )
+      }
       case 'icon':
         const IconComponent = (Icons as any)[component.props.name] || Icons.Heart
         return (
@@ -91,19 +110,25 @@ export function SortableComponent({
             />
           </div>
         )
-      case 'decorator':
+      case 'decorator': {
+        const decoratorStyle: React.CSSProperties = {
+          padding: `${component.props.padding}px`,
+          border: `${component.props.borderWidth}px ${component.props.borderStyle} ${component.props.borderColor}`,
+          borderRadius: `${component.props.borderRadius}px`,
+        }
+
+        if (component.props.useGradient) {
+          decoratorStyle.background = `linear-gradient(${component.props.gradientDirection}, ${component.props.gradientStart}, ${component.props.gradientEnd})`
+        } else {
+          decoratorStyle.backgroundColor = component.props.backgroundColor
+        }
+
         return (
-          <div
-            style={{
-              padding: `${component.props.padding}px`,
-              border: `${component.props.borderWidth}px ${component.props.borderStyle} ${component.props.borderColor}`,
-              backgroundColor: component.props.backgroundColor,
-              borderRadius: `${component.props.borderRadius}px`,
-            }}
-          >
+          <div style={decoratorStyle}>
             {component.props.content}
           </div>
         )
+      }
       case 'table':
         return (
           <table className="w-full border-collapse">

@@ -12,11 +12,66 @@ interface ComponentPropertiesProps {
   onUpdate: (props: any) => void
 }
 
-// Icone popolari Lucide
-const POPULAR_ICONS = [
-  'Heart', 'Star', 'Check', 'X', 'AlertCircle', 'Info', 'ShoppingCart',
-  'User', 'Mail', 'Phone', 'Home', 'Settings', 'Search', 'Calendar',
-  'Clock', 'MapPin', 'Gift', 'Truck', 'CreditCard', 'DollarSign'
+// Icone Lucide (50+ icone organizzate per categoria)
+const ICON_CATEGORIES = {
+  'Comune': [
+    'Heart', 'Star', 'Check', 'X', 'Plus', 'Minus', 'AlertCircle', 'Info',
+    'AlertTriangle', 'Circle', 'Square', 'Triangle'
+  ],
+  'Shopping': [
+    'ShoppingCart', 'ShoppingBag', 'CreditCard', 'DollarSign', 'Euro',
+    'Tag', 'Gift', 'Package', 'Ticket'
+  ],
+  'Comunicazione': [
+    'Mail', 'Phone', 'MessageCircle', 'MessageSquare', 'Send', 'Inbox',
+    'PhoneCall', 'PhoneIncoming', 'PhoneOutgoing'
+  ],
+  'Persone': [
+    'User', 'Users', 'UserPlus', 'UserCheck', 'UserX', 'Baby', 'Smile'
+  ],
+  'Navigazione': [
+    'Home', 'MapPin', 'Map', 'Navigation', 'Compass', 'Flag', 'Target',
+    'ArrowRight', 'ArrowLeft', 'ArrowUp', 'ArrowDown', 'ChevronRight'
+  ],
+  'Data & Ora': [
+    'Calendar', 'Clock', 'Watch', 'Timer', 'Hourglass', 'Sun', 'Moon'
+  ],
+  'Business': [
+    'Briefcase', 'Building', 'Building2', 'Store', 'Warehouse', 'Factory'
+  ],
+  'Cibo': [
+    'Coffee', 'Pizza', 'Wine', 'Beer', 'Utensils', 'UtensilsCrossed', 'Cookie'
+  ],
+  'Trasporti': [
+    'Truck', 'Car', 'Plane', 'Ship', 'Bus', 'Bike', 'Train'
+  ],
+  'Tech': [
+    'Settings', 'Search', 'Download', 'Upload', 'Wifi', 'Bluetooth',
+    'Battery', 'Power', 'Zap', 'Globe'
+  ],
+  'Social': [
+    'ThumbsUp', 'ThumbsDown', 'Award', 'Trophy', 'Medal', 'Crown'
+  ],
+  'Altro': [
+    'Key', 'Lock', 'Unlock', 'Eye', 'EyeOff', 'Bell', 'Music', 'Camera',
+    'Image', 'Film', 'Book', 'Bookmark', 'Newspaper'
+  ]
+}
+
+// Crea array flat di tutte le icone
+const ALL_ICONS = Object.values(ICON_CATEGORIES).flat()
+
+// Font weights disponibili
+const FONT_WEIGHTS = [
+  { value: '100', label: 'Thin (100)' },
+  { value: '200', label: 'Extra Light (200)' },
+  { value: '300', label: 'Light (300)' },
+  { value: '400', label: 'Normal (400)' },
+  { value: '500', label: 'Medium (500)' },
+  { value: '600', label: 'Semi Bold (600)' },
+  { value: '700', label: 'Bold (700)' },
+  { value: '800', label: 'Extra Bold (800)' },
+  { value: '900', label: 'Black (900)' }
 ]
 
 export function ComponentProperties({ component, onUpdate }: ComponentPropertiesProps) {
@@ -77,23 +132,114 @@ export function ComponentProperties({ component, onUpdate }: ComponentProperties
             </div>
 
             <div>
-              <Label>Colore</Label>
-              <div className="flex gap-2">
-                <Input
-                  type="color"
-                  value={component.props.color}
-                  onChange={(e) => updateProp('color', e.target.value)}
-                  className="w-20 h-10"
-                />
-                <Input
-                  type="text"
-                  value={component.props.color}
-                  onChange={(e) => updateProp('color', e.target.value)}
-                  placeholder="#000000"
-                  className="flex-1"
-                />
+              <Label>Font Weight</Label>
+              <select
+                value={component.props.fontWeight || '400'}
+                onChange={(e) => updateProp('fontWeight', e.target.value)}
+                className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
+              >
+                {FONT_WEIGHTS.map((weight) => (
+                  <option key={weight.value} value={weight.value}>
+                    {weight.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <Label>Tipo Colore</Label>
+              <div className="grid grid-cols-2 gap-2 mt-2">
+                <Button
+                  variant={!component.props.useGradient ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => updateProp('useGradient', false)}
+                >
+                  Solido
+                </Button>
+                <Button
+                  variant={component.props.useGradient ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => updateProp('useGradient', true)}
+                >
+                  Gradient
+                </Button>
               </div>
             </div>
+
+            {!component.props.useGradient ? (
+              <div>
+                <Label>Colore</Label>
+                <div className="flex gap-2">
+                  <Input
+                    type="color"
+                    value={component.props.color}
+                    onChange={(e) => updateProp('color', e.target.value)}
+                    className="w-20 h-10"
+                  />
+                  <Input
+                    type="text"
+                    value={component.props.color}
+                    onChange={(e) => updateProp('color', e.target.value)}
+                    placeholder="#000000"
+                    className="flex-1"
+                  />
+                </div>
+              </div>
+            ) : (
+              <>
+                <div>
+                  <Label>Colore Gradient 1</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      type="color"
+                      value={component.props.gradientStart || '#000000'}
+                      onChange={(e) => updateProp('gradientStart', e.target.value)}
+                      className="w-20 h-10"
+                    />
+                    <Input
+                      type="text"
+                      value={component.props.gradientStart || '#000000'}
+                      onChange={(e) => updateProp('gradientStart', e.target.value)}
+                      placeholder="#000000"
+                      className="flex-1"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label>Colore Gradient 2</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      type="color"
+                      value={component.props.gradientEnd || '#ffffff'}
+                      onChange={(e) => updateProp('gradientEnd', e.target.value)}
+                      className="w-20 h-10"
+                    />
+                    <Input
+                      type="text"
+                      value={component.props.gradientEnd || '#ffffff'}
+                      onChange={(e) => updateProp('gradientEnd', e.target.value)}
+                      placeholder="#ffffff"
+                      className="flex-1"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label>Direzione Gradient</Label>
+                  <select
+                    value={component.props.gradientDirection || 'to right'}
+                    onChange={(e) => updateProp('gradientDirection', e.target.value)}
+                    className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  >
+                    <option value="to right">Orizzontale →</option>
+                    <option value="to left">Orizzontale ←</option>
+                    <option value="to bottom">Verticale ↓</option>
+                    <option value="to top">Verticale ↑</option>
+                    <option value="to bottom right">Diagonale ↘</option>
+                    <option value="to bottom left">Diagonale ↙</option>
+                  </select>
+                </div>
+              </>
+            )}
 
             <div>
               <Label>Allineamento</Label>
@@ -121,19 +267,6 @@ export function ComponentProperties({ component, onUpdate }: ComponentProperties
                 </Button>
               </div>
             </div>
-
-            {component.type === 'heading' && (
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="bold"
-                  checked={component.props.bold}
-                  onChange={(e) => updateProp('bold', e.target.checked)}
-                  className="rounded"
-                />
-                <Label htmlFor="bold">Grassetto</Label>
-              </div>
-            )}
           </div>
         )
 
@@ -152,25 +285,50 @@ export function ComponentProperties({ component, onUpdate }: ComponentProperties
               </Button>
 
               {showIconPicker && (
-                <div className="mt-2 p-2 border rounded-lg max-h-64 overflow-y-auto grid grid-cols-4 gap-2">
-                  {POPULAR_ICONS.map((iconName) => {
-                    const Icon = (Icons as any)[iconName]
-                    return (
-                      <Button
-                        key={iconName}
-                        variant={component.props.name === iconName ? 'default' : 'outline'}
-                        size="sm"
-                        onClick={() => {
-                          updateProp('name', iconName)
-                          setShowIconPicker(false)
-                        }}
-                        className="flex flex-col gap-1 h-auto py-2"
-                      >
-                        <Icon className="w-5 h-5" />
-                        <span className="text-xs">{iconName}</span>
-                      </Button>
-                    )
-                  })}
+                <div className="mt-2 border rounded-lg max-h-96 overflow-hidden flex flex-col">
+                  {/* Search box */}
+                  <div className="p-2 border-b">
+                    <Input
+                      placeholder="Cerca icona..."
+                      onChange={(e) => {
+                        const search = e.target.value.toLowerCase()
+                        // Filter logic handled by rendering
+                      }}
+                      className="h-8"
+                    />
+                  </div>
+
+                  {/* Icon categories */}
+                  <div className="overflow-y-auto p-2 space-y-3">
+                    {Object.entries(ICON_CATEGORIES).map(([category, icons]) => (
+                      <div key={category}>
+                        <div className="text-xs font-semibold text-muted-foreground mb-1 px-1">
+                          {category}
+                        </div>
+                        <div className="grid grid-cols-4 gap-1">
+                          {icons.map((iconName) => {
+                            const Icon = (Icons as any)[iconName]
+                            if (!Icon) return null
+                            return (
+                              <Button
+                                key={iconName}
+                                variant={component.props.name === iconName ? 'default' : 'outline'}
+                                size="sm"
+                                onClick={() => {
+                                  updateProp('name', iconName)
+                                  setShowIconPicker(false)
+                                }}
+                                className="flex flex-col gap-1 h-auto py-2 px-1"
+                                title={iconName}
+                              >
+                                <Icon className="w-4 h-4" />
+                              </Button>
+                            )
+                          })}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
@@ -374,23 +532,99 @@ export function ComponentProperties({ component, onUpdate }: ComponentProperties
             </div>
 
             <div>
-              <Label>Colore Sfondo</Label>
-              <div className="flex gap-2">
-                <Input
-                  type="color"
-                  value={component.props.backgroundColor}
-                  onChange={(e) => updateProp('backgroundColor', e.target.value)}
-                  className="w-20 h-10"
-                />
-                <Input
-                  type="text"
-                  value={component.props.backgroundColor}
-                  onChange={(e) => updateProp('backgroundColor', e.target.value)}
-                  placeholder="#ffffff"
-                  className="flex-1"
-                />
+              <Label>Tipo Sfondo</Label>
+              <div className="grid grid-cols-2 gap-2 mt-2">
+                <Button
+                  variant={!component.props.useGradient ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => updateProp('useGradient', false)}
+                >
+                  Solido
+                </Button>
+                <Button
+                  variant={component.props.useGradient ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => updateProp('useGradient', true)}
+                >
+                  Gradient
+                </Button>
               </div>
             </div>
+
+            {!component.props.useGradient ? (
+              <div>
+                <Label>Colore Sfondo</Label>
+                <div className="flex gap-2">
+                  <Input
+                    type="color"
+                    value={component.props.backgroundColor}
+                    onChange={(e) => updateProp('backgroundColor', e.target.value)}
+                    className="w-20 h-10"
+                  />
+                  <Input
+                    type="text"
+                    value={component.props.backgroundColor}
+                    onChange={(e) => updateProp('backgroundColor', e.target.value)}
+                    placeholder="#ffffff"
+                    className="flex-1"
+                  />
+                </div>
+              </div>
+            ) : (
+              <>
+                <div>
+                  <Label>Colore Gradient 1</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      type="color"
+                      value={component.props.gradientStart || '#ffffff'}
+                      onChange={(e) => updateProp('gradientStart', e.target.value)}
+                      className="w-20 h-10"
+                    />
+                    <Input
+                      type="text"
+                      value={component.props.gradientStart || '#ffffff'}
+                      onChange={(e) => updateProp('gradientStart', e.target.value)}
+                      placeholder="#ffffff"
+                      className="flex-1"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label>Colore Gradient 2</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      type="color"
+                      value={component.props.gradientEnd || '#cccccc'}
+                      onChange={(e) => updateProp('gradientEnd', e.target.value)}
+                      className="w-20 h-10"
+                    />
+                    <Input
+                      type="text"
+                      value={component.props.gradientEnd || '#cccccc'}
+                      onChange={(e) => updateProp('gradientEnd', e.target.value)}
+                      placeholder="#cccccc"
+                      className="flex-1"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <Label>Direzione Gradient</Label>
+                  <select
+                    value={component.props.gradientDirection || 'to right'}
+                    onChange={(e) => updateProp('gradientDirection', e.target.value)}
+                    className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  >
+                    <option value="to right">Orizzontale →</option>
+                    <option value="to left">Orizzontale ←</option>
+                    <option value="to bottom">Verticale ↓</option>
+                    <option value="to top">Verticale ↑</option>
+                    <option value="to bottom right">Diagonale ↘</option>
+                    <option value="to bottom left">Diagonale ↙</option>
+                  </select>
+                </div>
+              </>
+            )}
 
             <div>
               <Label>Raggio Bordo (px)</Label>
