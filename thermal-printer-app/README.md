@@ -194,6 +194,308 @@ Troverai l'app compilata in `release/`
 
 ---
 
+## 📝 Motore Template Nunjucks
+
+L'app integra **Nunjucks**, un potente motore di templating (equivalente JavaScript di Jinja2) che permette di creare template dinamici con variabili, cicli, condizioni e filtri.
+
+### 🎯 Perché usare i Template?
+
+I template permettono di:
+- **Riutilizzare** lo stesso design con dati diversi
+- **Automatizzare** la stampa di ricevute, etichette, fatture
+- **Generare** documenti dinamici da database o API
+- **Personalizzare** contenuti in base ai dati
+
+### 🔧 Sintassi Base
+
+#### Variabili
+```nunjucks
+{{ nome_variabile }}
+{{ prodotto.nome }}
+{{ items[0] }}
+```
+
+#### Cicli (Loop)
+```nunjucks
+{% for item in articoli %}
+  {{ item.nome }} - € {{ item.prezzo }}
+{% endfor %}
+```
+
+#### Condizioni (If)
+```nunjucks
+{% if totale > 100 %}
+  <p>Sconto applicato!</p>
+{% else %}
+  <p>Prezzo standard</p>
+{% endif %}
+```
+
+#### Filtri
+```nunjucks
+{{ testo | uppercase }}
+{{ prezzo | format_number }}
+{{ data | date('DD/MM/YYYY') }}
+```
+
+### 📦 Filtri Disponibili
+
+L'app include filtri personalizzati per formattare i dati:
+
+| Filtro | Descrizione | Esempio | Output |
+|--------|-------------|---------|--------|
+| `uppercase` | Maiuscolo | `{{ "ciao" \| uppercase }}` | `CIAO` |
+| `lowercase` | Minuscolo | `{{ "CIAO" \| lowercase }}` | `ciao` |
+| `format_number` | Formatta numero | `{{ 1234.56 \| format_number }}` | `1,234.56` |
+| `currency` | Formatta valuta | `{{ 10.5 \| currency }}` | `€ 10.50` |
+| `truncate` | Tronca testo | `{{ "Testo lungo" \| truncate(5) }}` | `Testo...` |
+
+### 📋 Esempi Pratici
+
+#### Esempio 1: Ricevuta Negozio
+
+**Template HTML:**
+```html
+<div style="text-align: center; font-family: Arial, sans-serif;">
+  <h1 style="font-size: 20px; font-weight: bold;">{{ negozio.nome }}</h1>
+  <p style="font-size: 12px;">{{ negozio.indirizzo }}</p>
+  <p style="font-size: 12px;">Tel: {{ negozio.telefono }}</p>
+</div>
+
+<hr style="border-top: 1px dashed #000; margin: 10px 0;">
+
+<div style="font-size: 12px;">
+  <p><strong>Data:</strong> {{ data }}</p>
+  <p><strong>Ricevuta N°:</strong> {{ numero_ricevuta }}</p>
+</div>
+
+<hr style="border-top: 1px dashed #000; margin: 10px 0;">
+
+<table style="width: 100%; font-size: 12px;">
+  {% for item in articoli %}
+  <tr>
+    <td>{{ item.quantita }}x {{ item.nome }}</td>
+    <td style="text-align: right;">{{ item.prezzo | currency }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<hr style="border-top: 1px dashed #000; margin: 10px 0;">
+
+<div style="text-align: right; font-size: 14px; font-weight: bold;">
+  TOTALE: {{ totale | currency }}
+</div>
+
+<div style="text-align: center; margin-top: 20px; font-size: 12px;">
+  <p>Grazie per il tuo acquisto!</p>
+  {% if punti_fedelta %}
+  <p>Hai guadagnato {{ punti_fedelta }} punti fedeltà</p>
+  {% endif %}
+</div>
+```
+
+**Dati JSON:**
+```json
+{
+  "negozio": {
+    "nome": "SuperMarket Express",
+    "indirizzo": "Via Roma 123, 00100 Roma",
+    "telefono": "06 1234567"
+  },
+  "data": "10/11/2025 - 14:30",
+  "numero_ricevuta": "RIC-2025-001234",
+  "articoli": [
+    { "quantita": 2, "nome": "Latte Intero", "prezzo": 2.50 },
+    { "quantita": 1, "nome": "Pane Integrale", "prezzo": 1.80 },
+    { "quantita": 3, "nome": "Mele Golden", "prezzo": 4.50 }
+  ],
+  "totale": 8.80,
+  "punti_fedelta": 88
+}
+```
+
+#### Esempio 2: Etichetta Spedizione
+
+**Template HTML:**
+```html
+<div style="padding: 10px; font-family: Arial, sans-serif;">
+  <div style="text-align: center; margin-bottom: 20px;">
+    <h1 style="font-size: 24px; font-weight: bold;">SPEDIZIONE</h1>
+    <p style="font-size: 16px;">{{ tracking_number }}</p>
+  </div>
+
+  <div style="border: 2px solid #000; padding: 10px; margin: 10px 0;">
+    <p style="font-size: 10px; margin: 0;"><strong>MITTENTE:</strong></p>
+    <p style="font-size: 14px; margin: 5px 0;">{{ mittente.nome }}</p>
+    <p style="font-size: 12px; margin: 0;">{{ mittente.indirizzo }}</p>
+    <p style="font-size: 12px; margin: 0;">{{ mittente.citta }}, {{ mittente.cap }}</p>
+  </div>
+
+  <div style="border: 2px solid #000; padding: 10px; margin: 10px 0;">
+    <p style="font-size: 10px; margin: 0;"><strong>DESTINATARIO:</strong></p>
+    <p style="font-size: 14px; margin: 5px 0;">{{ destinatario.nome | uppercase }}</p>
+    <p style="font-size: 12px; margin: 0;">{{ destinatario.indirizzo }}</p>
+    <p style="font-size: 12px; margin: 0;">{{ destinatario.citta }}, {{ destinatario.cap }}</p>
+    <p style="font-size: 12px; margin: 5px 0 0 0;">Tel: {{ destinatario.telefono }}</p>
+  </div>
+
+  <div style="margin-top: 15px;">
+    <p style="font-size: 12px;"><strong>Peso:</strong> {{ peso_kg }} kg</p>
+    <p style="font-size: 12px;"><strong>Colli:</strong> {{ numero_colli }}</p>
+    <p style="font-size: 12px;"><strong>Tipo:</strong> {{ tipo_servizio }}</p>
+  </div>
+
+  {% if note %}
+  <div style="margin-top: 10px; padding: 5px; background-color: #ffeb3b;">
+    <p style="font-size: 11px; margin: 0;"><strong>Note:</strong> {{ note }}</p>
+  </div>
+  {% endif %}
+</div>
+```
+
+**Dati JSON:**
+```json
+{
+  "tracking_number": "IT123456789012",
+  "mittente": {
+    "nome": "Amazon Logistics",
+    "indirizzo": "Via della Logistica 1",
+    "citta": "Milano",
+    "cap": "20100"
+  },
+  "destinatario": {
+    "nome": "Mario Rossi",
+    "indirizzo": "Via Garibaldi 45",
+    "citta": "Roma",
+    "cap": "00100",
+    "telefono": "333 1234567"
+  },
+  "peso_kg": 2.5,
+  "numero_colli": 1,
+  "tipo_servizio": "Espresso 24h",
+  "note": "Consegnare solo al destinatario"
+}
+```
+
+#### Esempio 3: Badge Evento/Conferenza
+
+**Template HTML:**
+```html
+<div style="text-align: center; padding: 15px; font-family: Arial, sans-serif;">
+  <div style="background: linear-gradient(to right, #667eea, #764ba2); padding: 20px; color: white; border-radius: 10px;">
+    <h1 style="font-size: 22px; margin: 0;">{{ evento.nome }}</h1>
+    <p style="font-size: 14px; margin: 5px 0;">{{ evento.data }}</p>
+  </div>
+
+  <div style="margin: 20px 0;">
+    <h2 style="font-size: 28px; margin: 10px 0;">{{ partecipante.nome | uppercase }}</h2>
+    <p style="font-size: 16px; color: #666; margin: 5px 0;">{{ partecipante.azienda }}</p>
+  </div>
+
+  <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px; margin: 10px 0;">
+    <p style="font-size: 18px; font-weight: bold; margin: 0;">{{ partecipante.tipologia | uppercase }}</p>
+  </div>
+
+  <div style="margin-top: 15px; font-size: 12px; color: #666;">
+    <p>Badge ID: {{ partecipante.badge_id }}</p>
+    {% if partecipante.accesso_vip %}
+    <p style="color: #d4af37; font-weight: bold;">★ ACCESSO VIP ★</p>
+    {% endif %}
+  </div>
+
+  <div style="margin-top: 20px; font-size: 10px; color: #999;">
+    <p>{{ evento.luogo }}</p>
+    <p>Ore: {{ evento.orario_inizio }} - {{ evento.orario_fine }}</p>
+  </div>
+</div>
+```
+
+**Dati JSON:**
+```json
+{
+  "evento": {
+    "nome": "Tech Summit 2025",
+    "data": "15-16 Novembre 2025",
+    "luogo": "Milano Convention Center",
+    "orario_inizio": "09:00",
+    "orario_fine": "18:00"
+  },
+  "partecipante": {
+    "nome": "Laura Bianchi",
+    "azienda": "TechCorp Italia",
+    "tipologia": "Speaker",
+    "badge_id": "TS2025-SPK-042",
+    "accesso_vip": true
+  }
+}
+```
+
+### 🚀 Come Usare i Template
+
+#### Metodo 1: Template Builder (GUI)
+
+1. Vai su **Template Builder**
+2. Crea il design visualmente con drag & drop
+3. Clicca **HTML** per vedere il codice
+4. Copia il codice e sostituisci i valori fissi con variabili Nunjucks
+5. Salva il template modificato
+
+#### Metodo 2: Da Codice JavaScript/TypeScript
+
+```typescript
+// Renderizza template con dati
+const html = await window.electronAPI.template.render(templateString, dati)
+
+// Stampa direttamente
+await window.electronAPI.printer.printTemplate(templateString, dati, 384)
+
+// Esempio completo
+const template = `
+<div style="text-align: center;">
+  <h1>{{ titolo }}</h1>
+  {% for item in items %}
+  <p>{{ item }}</p>
+  {% endfor %}
+</div>
+`
+
+const dati = {
+  titolo: "Lista Prodotti",
+  items: ["Prodotto 1", "Prodotto 2", "Prodotto 3"]
+}
+
+await window.electronAPI.printer.printTemplate(template, dati, 384)
+```
+
+#### Metodo 3: Caricare Template Salvati
+
+```typescript
+// Carica template salvato
+const result = await window.electronAPI.template.load('ricevuta_negozio')
+const template = result.content
+
+// Renderizza con nuovi dati
+const html = await window.electronAPI.template.render(template, nuoviDati)
+```
+
+### 💡 Tips & Best Practices
+
+1. **Usa variabili descrittive**: `{{ prodotto.nome }}` invece di `{{ p.n }}`
+2. **Gestisci valori mancanti**: Usa `{% if variabile %}...{% endif %}`
+3. **Formatta i numeri**: Usa sempre i filtri `format_number` o `currency`
+4. **Testa con dati reali**: Assicurati che il template funzioni con tutti i casi
+5. **Mantieni HTML semplice**: Le stampanti termiche hanno capacità limitate
+6. **Evita CSS complessi**: Usa solo stili inline e proprietà base
+7. **Dimensioni font**: Usa font 10-14px per testo normale, 16-24px per titoli
+
+### 🔗 Risorse
+
+- **Nunjucks Docs**: https://mozilla.github.io/nunjucks/
+- **Tutti i tag**: https://mozilla.github.io/nunjucks/templating.html#tags
+- **Tutti i filtri built-in**: https://mozilla.github.io/nunjucks/templating.html#filters
+
+---
+
 ## 🏗️ Architettura
 
 ```
