@@ -1,5 +1,5 @@
 import { useDraggable } from '@dnd-kit/core'
-import { Type, Heading1, Table, Minus, Image, Barcode } from 'lucide-react'
+import { Type, Heading1, Table, Minus, Image, Barcode, Sparkles, Box } from 'lucide-react'
 import { Card } from '../ui/card'
 import { ComponentType } from '../TemplateBuilder'
 
@@ -58,6 +58,18 @@ export function ComponentPalette() {
       description: 'Paragrafo di testo normale',
     },
     {
+      id: 'icon',
+      icon: <Sparkles className="w-4 h-4" />,
+      label: 'Icona',
+      description: 'Icona decorativa',
+    },
+    {
+      id: 'image',
+      icon: <Image className="w-4 h-4" />,
+      label: 'Immagine',
+      description: 'Carica o inserisci URL',
+    },
+    {
       id: 'table',
       icon: <Table className="w-4 h-4" />,
       label: 'Tabella',
@@ -68,6 +80,12 @@ export function ComponentPalette() {
       icon: <Minus className="w-4 h-4" />,
       label: 'Separatore',
       description: 'Linea orizzontale',
+    },
+    {
+      id: 'decorator',
+      icon: <Box className="w-4 h-4" />,
+      label: 'Box Decorato',
+      description: 'Contenitore con bordi',
     },
     {
       id: 'barcode',

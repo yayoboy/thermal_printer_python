@@ -4,6 +4,7 @@ import { Card } from '../ui/card'
 import { Button } from '../ui/button'
 import { GripVertical, Trash2 } from 'lucide-react'
 import { TemplateComponent } from '../TemplateBuilder'
+import * as Icons from 'lucide-react'
 
 interface SortableComponentProps {
   component: TemplateComponent
@@ -37,7 +38,14 @@ export function SortableComponent({
     switch (component.type) {
       case 'text':
         return (
-          <p style={{ textAlign: component.props.align, fontSize: component.props.fontSize }}>
+          <p
+            style={{
+              textAlign: component.props.align,
+              fontSize: component.props.fontSize,
+              fontFamily: component.props.fontFamily,
+              color: component.props.color,
+            }}
+          >
             {component.props.content}
           </p>
         )
@@ -47,11 +55,54 @@ export function SortableComponent({
             style={{
               textAlign: component.props.align,
               fontSize: component.props.fontSize,
+              fontFamily: component.props.fontFamily,
+              color: component.props.color,
               fontWeight: component.props.bold ? 'bold' : 'normal',
             }}
           >
             {component.props.content}
           </h1>
+        )
+      case 'icon':
+        const IconComponent = (Icons as any)[component.props.name] || Icons.Heart
+        return (
+          <div style={{ textAlign: component.props.align }}>
+            <IconComponent
+              size={component.props.size}
+              color={component.props.color}
+              style={{ display: 'inline-block' }}
+            />
+          </div>
+        )
+      case 'image':
+        if (!component.props.src) {
+          return (
+            <div className="text-center text-muted-foreground text-sm border-2 border-dashed rounded p-4">
+              Nessuna immagine caricata
+            </div>
+          )
+        }
+        return (
+          <div style={{ textAlign: component.props.align }}>
+            <img
+              src={component.props.src}
+              alt={component.props.alt}
+              style={{ maxWidth: `${component.props.width}px`, height: 'auto' }}
+            />
+          </div>
+        )
+      case 'decorator':
+        return (
+          <div
+            style={{
+              padding: `${component.props.padding}px`,
+              border: `${component.props.borderWidth}px ${component.props.borderStyle} ${component.props.borderColor}`,
+              backgroundColor: component.props.backgroundColor,
+              borderRadius: `${component.props.borderRadius}px`,
+            }}
+          >
+            {component.props.content}
+          </div>
         )
       case 'table':
         return (
@@ -77,7 +128,7 @@ export function SortableComponent({
           <hr
             style={{
               border: 'none',
-              borderTop: `1px ${component.props.style} #000`,
+              borderTop: `${component.props.thickness}px ${component.props.style} ${component.props.color}`,
             }}
           />
         )

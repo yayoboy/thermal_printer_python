@@ -11,7 +11,19 @@ import { ComponentProperties } from './builder/ComponentProperties'
 import { Printer, Save, Eye, Code } from 'lucide-react'
 
 // Tipi di componenti
-export type ComponentType = 'text' | 'heading' | 'table' | 'separator' | 'image' | 'barcode'
+export type ComponentType = 'text' | 'heading' | 'table' | 'separator' | 'image' | 'barcode' | 'icon' | 'decorator'
+
+// Font disponibili
+export const AVAILABLE_FONTS = [
+  'Arial, sans-serif',
+  'Times New Roman, serif',
+  'Courier New, monospace',
+  'Georgia, serif',
+  'Verdana, sans-serif',
+  'Comic Sans MS, cursive',
+  'Impact, fantasy',
+  'Trebuchet MS, sans-serif',
+]
 
 export interface TemplateComponent {
   id: string
@@ -65,9 +77,22 @@ export function TemplateBuilder() {
   const getDefaultProps = (type: ComponentType) => {
     switch (type) {
       case 'text':
-        return { content: 'Testo di esempio', align: 'left', fontSize: 12 }
+        return {
+          content: 'Testo di esempio',
+          align: 'left',
+          fontSize: 12,
+          fontFamily: 'Arial, sans-serif',
+          color: '#000000'
+        }
       case 'heading':
-        return { content: 'Titolo', align: 'center', fontSize: 18, bold: true }
+        return {
+          content: 'Titolo',
+          align: 'center',
+          fontSize: 18,
+          bold: true,
+          fontFamily: 'Arial, sans-serif',
+          color: '#000000'
+        }
       case 'table':
         return {
           rows: [
@@ -76,11 +101,28 @@ export function TemplateBuilder() {
           ],
         }
       case 'separator':
-        return { style: 'dashed' }
+        return { style: 'dashed', color: '#000000', thickness: 1 }
       case 'image':
-        return { src: '', alt: 'Immagine', width: 200 }
+        return { src: '', alt: 'Immagine', width: 200, align: 'center' }
       case 'barcode':
         return { value: '1234567890', type: 'code128' }
+      case 'icon':
+        return {
+          name: 'Heart',
+          size: 24,
+          color: '#000000',
+          align: 'center'
+        }
+      case 'decorator':
+        return {
+          content: 'Box decorato',
+          padding: 10,
+          borderWidth: 2,
+          borderStyle: 'solid',
+          borderColor: '#000000',
+          backgroundColor: '#ffffff',
+          borderRadius: 4
+        }
       default:
         return {}
     }
@@ -105,10 +147,10 @@ export function TemplateBuilder() {
     components.forEach((comp) => {
       switch (comp.type) {
         case 'text':
-          html += `  <p style="text-align: ${comp.props.align}; font-size: ${comp.props.fontSize}px; margin: 8px 0;">${comp.props.content}</p>\n`
+          html += `  <p style="text-align: ${comp.props.align}; font-size: ${comp.props.fontSize}px; font-family: ${comp.props.fontFamily}; color: ${comp.props.color}; margin: 8px 0;">${comp.props.content}</p>\n`
           break
         case 'heading':
-          html += `  <h1 style="text-align: ${comp.props.align}; font-size: ${comp.props.fontSize}px; font-weight: ${comp.props.bold ? 'bold' : 'normal'}; margin: 10px 0;">${comp.props.content}</h1>\n`
+          html += `  <h1 style="text-align: ${comp.props.align}; font-size: ${comp.props.fontSize}px; font-family: ${comp.props.fontFamily}; color: ${comp.props.color}; font-weight: ${comp.props.bold ? 'bold' : 'normal'}; margin: 10px 0;">${comp.props.content}</h1>\n`
           break
         case 'table':
           html += '  <table style="width: 100%; border-collapse: collapse; margin: 10px 0;">\n'
@@ -122,10 +164,22 @@ export function TemplateBuilder() {
           html += '  </table>\n'
           break
         case 'separator':
-          html += `  <hr style="border: none; border-top: 1px ${comp.props.style} #000; margin: 10px 0;" />\n`
+          html += `  <hr style="border: none; border-top: ${comp.props.thickness}px ${comp.props.style} ${comp.props.color}; margin: 10px 0;" />\n`
+          break
+        case 'image':
+          if (comp.props.src) {
+            html += `  <div style="text-align: ${comp.props.align}; margin: 10px 0;"><img src="${comp.props.src}" alt="${comp.props.alt}" style="max-width: ${comp.props.width}px; height: auto;" /></div>\n`
+          }
           break
         case 'barcode':
           html += `  <div style="text-align: center; font-family: monospace; letter-spacing: 2px; margin: 10px 0;">${comp.props.value}</div>\n`
+          break
+        case 'icon':
+          // Per le icone, usiamo un simbolo Unicode o emoji come placeholder
+          html += `  <div style="text-align: ${comp.props.align}; font-size: ${comp.props.size}px; color: ${comp.props.color}; margin: 10px 0;">★</div>\n`
+          break
+        case 'decorator':
+          html += `  <div style="padding: ${comp.props.padding}px; border: ${comp.props.borderWidth}px ${comp.props.borderStyle} ${comp.props.borderColor}; background-color: ${comp.props.backgroundColor}; border-radius: ${comp.props.borderRadius}px; margin: 10px 0;">${comp.props.content}</div>\n`
           break
       }
     })
