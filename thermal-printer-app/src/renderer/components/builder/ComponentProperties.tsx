@@ -1,11 +1,10 @@
+import React, { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Input } from '../ui/input'
 import { Label } from '../ui/label'
 import { Button } from '../ui/button'
 import { TemplateComponent, AVAILABLE_FONTS } from '../TemplateBuilder'
-import { Select } from '../ui/select'
 import * as Icons from 'lucide-react'
-import { useState } from 'react'
 
 interface ComponentPropertiesProps {
   component: TemplateComponent

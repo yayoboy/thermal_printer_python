@@ -1,3 +1,4 @@
+// @ts-ignore - escpos non ha types ufficiali
 import escpos from 'escpos'
 // @ts-ignore - escpos adapters non hanno types completi
 import USB from 'escpos-usb'
