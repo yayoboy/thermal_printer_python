@@ -1,0 +1,31 @@
+<div style="font-family: Arial, sans-serif; padding: 10px;">
+  <h1 style="text-align: center; font-size: 18px; font-weight: bold; margin: 10px 0;">{{ negozio.nome }}</h1>
+  <p style="text-align: center; font-size: 12px; margin: 8px 0;">{{ negozio.indirizzo }}</p>
+  <p style="text-align: center; font-size: 12px; margin: 8px 0;">Tel: {{ negozio.telefono }}</p>
+  <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;" />
+  <p style="text-align: left; font-size: 12px; margin: 8px 0;">Data: {{ data }}</p>
+  <p style="text-align: left; font-size: 12px; margin: 8px 0;">Scontrino: #{{ numero_scontrino }}</p>
+  <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;" />
+  <table style="width: 100%; border-collapse: collapse; margin: 10px 0;">
+    <tr>
+      <th style="padding: 4px; text-align: left; font-weight: bold;">Articolo</th>
+      <th style="padding: 4px; text-align: left; font-weight: bold;">Q.tà</th>
+      <th style="padding: 4px; text-align: left; font-weight: bold;">Prezzo</th>
+    </tr>
+    {% for item in articoli %}
+    <tr>
+      <td style="padding: 4px; text-align: left; ">{{ item.nome }}</td>
+      <td style="padding: 4px; text-align: left; ">{{ item.quantita }}</td>
+      <td style="padding: 4px; text-align: left; ">€ {{ item.prezzo|format_number }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;" />
+  <p style="text-align: right; font-size: 12px; margin: 8px 0;">Subtotale: € {{ subtotale|format_number }}</p>
+  <p style="text-align: right; font-size: 12px; margin: 8px 0;">IVA (22%): € {{ iva|format_number }}</p>
+  <h1 style="text-align: right; font-size: 18px; font-weight: bold; margin: 10px 0;">TOTALE: € {{ totale|format_number }}</h1>
+  <hr style="border: none; border-top: 1px dashed #000; margin: 10px 0;" />
+  <p style="text-align: center; font-size: 12px; margin: 8px 0;">Grazie per il tuo acquisto!</p>
+  <p style="text-align: center; font-size: 12px; margin: 8px 0;">Arrivederci!</p>
+  <div style="text-align: center; font-family: monospace; letter-spacing: 2px; margin: 10px 0;">*{{ codice_fiscale }}*</div>
+</div>
