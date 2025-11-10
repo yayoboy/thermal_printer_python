@@ -11,6 +11,11 @@ App Electron con drag & drop builder per stampanti termiche ESC/POS.
 - ✅ **Multi-connessione** - Supporto Network, USB, Serial
 - ✅ **shadcn-ui** - UI moderna e componenti React
 - ✅ **TypeScript** - Type-safe development
+- ✅ **8 Font Families** - Arial, Times, Courier, Georgia, Verdana, Comic Sans, Impact, Trebuchet
+- ✅ **20+ Icone** - Lucide icons con picker visuale
+- ✅ **Upload Immagini** - Carica file o usa URL
+- ✅ **Decoratori** - Box con bordi, colori, padding personalizzabili
+- ✅ **Color Pickers** - Selezione colori per testi, icone, bordi
 
 ---
 
@@ -66,12 +71,20 @@ Troverai l'app compilata in `release/`
 
 1. Vai su **Template Builder**
 2. Trascina componenti dalla palette:
-   - **Titolo** - Testo grande in grassetto
-   - **Testo** - Paragrafo normale
-   - **Tabella** - Dati strutturati
-   - **Separatore** - Linea orizzontale
+   - **Titolo** - Testo grande con font e colore personalizzabili
+   - **Testo** - Paragrafo con 8 font disponibili e color picker
+   - **Icona** - 20+ icone Lucide (Heart, Star, ShoppingCart, User, etc.)
+   - **Immagine** - Upload file o URL immagine
+   - **Tabella** - Dati strutturati in colonne
+   - **Separatore** - Linea orizzontale con spessore e colore
+   - **Box Decorato** - Contenitore con bordi e background personalizzabili
    - **Barcode** - Codice a barre simulato
-3. Clicca su un componente per modificarne le proprietà
+3. Clicca su un componente per modificarne le proprietà:
+   - **Font**: Scegli tra 8 famiglie di font
+   - **Colore**: Color picker + hex input
+   - **Allineamento**: Sinistra, centro, destra
+   - **Dimensioni**: Font size, padding, bordi
+   - **Stili**: Bold, border style, border radius
 4. Riordina trascinando i componenti
 5. Clicca **Preview** per vedere l'anteprima
 6. Clicca **HTML** per vedere il codice generato
@@ -88,6 +101,84 @@ Troverai l'app compilata in `release/`
 2. Seleziona un template dalla lista
 3. Vedi anteprima e codice HTML
 4. Esporta come file HTML
+
+---
+
+## 🎨 Componenti Avanzati
+
+### 📝 Font e Testo
+
+**8 Font disponibili:**
+- Arial (sans-serif) - Moderno e pulito
+- Times New Roman (serif) - Classico ed elegante
+- Courier New (monospace) - Stile typewriter
+- Georgia (serif) - Leggibile e professionale
+- Verdana (sans-serif) - Ottimo per schermi
+- Comic Sans MS (cursive) - Informale
+- Impact (fantasy) - Bold e impattante
+- Trebuchet MS (sans-serif) - Moderno
+
+**Personalizzazione:**
+- Selezione font da dropdown
+- Color picker con anteprima
+- Hex color input (#000000 - #ffffff)
+- Dimensione font (8px - 72px)
+- Allineamento (left/center/right)
+
+### ✨ Icone
+
+**20+ Icone Lucide disponibili:**
+- Heart, Star, Check, X
+- AlertCircle, Info
+- ShoppingCart, CreditCard, DollarSign
+- User, Mail, Phone
+- Home, Settings, Search
+- Calendar, Clock, MapPin
+- Gift, Truck
+
+**Proprietà:**
+- Picker visuale con anteprima icone
+- Dimensione personalizzabile (8px - 72px)
+- Color picker
+- Allineamento
+
+### 🖼️ Immagini
+
+**Due modalità di caricamento:**
+1. **URL**: Inserisci link immagine (https://...)
+2. **Upload File**: Carica da PC (JPG, PNG, GIF, WebP)
+
+**Caratteristiche:**
+- Anteprima in tempo reale
+- Conversione automatica in base64
+- Larghezza massima configurabile
+- Testo alternativo (alt)
+- Allineamento personalizzabile
+- Supporto tutti i formati immagine
+
+### 📦 Box Decorati
+
+**Personalizzazione completa:**
+- **Padding**: Spazio interno (0-50px)
+- **Bordo**:
+  - Spessore (0-10px)
+  - Stile: Solido, Tratteggiato, Punteggiato, Doppio
+  - Colore con picker
+- **Background**: Color picker per sfondo
+- **Border Radius**: Angoli arrotondati (0-20px)
+
+**Casi d'uso:**
+- Box promozionali
+- Avvisi importanti
+- Sezioni evidenziate
+- Contenuti speciali
+
+### ➖ Separatori
+
+**Opzioni:**
+- Stile: Solido o Tratteggiato
+- Spessore: 1-10px
+- Colore personalizzabile
 
 ---
 
