@@ -5,6 +5,7 @@ App Electron con drag & drop builder per stampanti termiche ESC/POS.
 ## ✨ Caratteristiche
 
 - ✅ **Drag & Drop Builder** - Interfaccia visuale per creare template
+- ✅ **Preview 1:1** - Canvas 576px larghezza esatta POS-8370 (80mm)
 - ✅ **Template Nunjucks** - Engine di templating (come Jinja2)
 - ✅ **HTML → Image** - Rendering con Puppeteer
 - ✅ **ESC/POS** - Conversione automatica per stampanti termiche
@@ -105,6 +106,53 @@ Troverai l'app compilata in `release/`
 2. Seleziona un template dalla lista
 3. Vedi anteprima e codice HTML
 4. Esporta come file HTML
+
+---
+
+## 📐 Preview 1:1 - Larghezza Esatta Stampante
+
+Il **Template Builder** mostra un'anteprima **1:1** con la larghezza **esatta** della stampante POS-8370.
+
+### Specifiche Tecniche
+
+- **Larghezza carta**: 80mm
+- **Larghezza pixel**: 576px (72 DPI)
+- **Area stampabile**: 560px (con margini 8px)
+- **Modello**: POS-8370 (compatibile con la maggior parte delle stampanti termiche 80mm)
+
+### Cosa Significa?
+
+✅ **Ciò che vedi è ciò che stampi**: Il canvas ha esattamente 576px di larghezza, la stessa della stampante
+✅ **Nessuna sorpresa**: Testi, immagini e layout appariranno identici sulla carta
+✅ **Indicatori visivi**: Righelli laterali e label "80mm" per orientarti
+✅ **Limiti automatici**: Le immagini sono limitate a max 560px per evitare overflow
+
+### Come Funziona
+
+Il canvas mostra:
+- **Bordo carta bianco** - Simula il rotolo di carta termica
+- **Area tratteggiata blu** - Area stampabile con padding sicuro
+- **Indicatore "Inizio Stampa"** - Mostra dove inizia la stampa
+- **Righelli laterali** - Mostrano 0mm e 80mm ai bordi
+- **Sfondo grigio** - Simula il tavolo/piano della stampante
+
+### Constraints Automatici
+
+L'app applica automaticamente:
+- Larghezza massima immagini: **560px**
+- Larghezza totale template: **576px**
+- Padding interno: **8-10px** per margini di sicurezza
+- Text wrap: Automatico per evitare testi fuori bordo
+
+### Compatibilità
+
+Stampanti termiche supportate:
+- ✅ POS-8370 (80mm)
+- ✅ Epson TM-T20/T88 (80mm)
+- ✅ Star TSP100/650 (80mm)
+- ✅ Stampanti ESC/POS generiche 80mm (576px)
+
+**Nota**: Per stampanti 58mm (384px), usa larghezza ridotta (feature futura).
 
 ---
 

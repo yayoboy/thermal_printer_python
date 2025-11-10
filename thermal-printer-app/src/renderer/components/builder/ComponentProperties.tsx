@@ -435,8 +435,16 @@ export function ComponentProperties({ component, onUpdate }: ComponentProperties
               <Input
                 type="number"
                 value={component.props.width}
-                onChange={(e) => updateProp('width', parseInt(e.target.value))}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value)
+                  // Max 560px per rispettare larghezza stampante POS-8370
+                  updateProp('width', Math.min(val, 560))
+                }}
+                max={560}
               />
+              <p className="text-xs text-muted-foreground mt-1">
+                Max 560px (larghezza stampante: 576px)
+              </p>
             </div>
 
             <div>

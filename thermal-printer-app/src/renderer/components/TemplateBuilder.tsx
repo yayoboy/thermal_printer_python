@@ -111,6 +111,7 @@ export function TemplateBuilder() {
       case 'separator':
         return { style: 'dashed', color: '#000000', thickness: 1 }
       case 'image':
+        // Max 560px per rispettare larghezza carta 576px - padding
         return { src: '', alt: 'Immagine', width: 200, align: 'center' }
       case 'barcode':
         return { value: '1234567890', type: 'code128' }
@@ -154,7 +155,8 @@ export function TemplateBuilder() {
   }
 
   const generateHTML = () => {
-    let html = '<div style="font-family: Arial, sans-serif; padding: 10px;">\n'
+    // Larghezza POS-8370: 80mm = 576px
+    let html = '<div style="font-family: Arial, sans-serif; width: 576px; padding: 10px; margin: 0 auto; background: white;">\n'
 
     components.forEach((comp) => {
       switch (comp.type) {
@@ -255,8 +257,8 @@ export function TemplateBuilder() {
       </div>
 
       {/* Area centrale - Canvas */}
-      <div className="flex-1 p-6 overflow-y-auto">
-        <div className="max-w-2xl mx-auto space-y-6">
+      <div className="flex-1 p-6 overflow-y-auto bg-slate-100">
+        <div className="max-w-4xl mx-auto space-y-6">
           {/* Header */}
           <Card>
             <CardHeader>
@@ -293,10 +295,19 @@ export function TemplateBuilder() {
             </CardContent>
           </Card>
 
-          {/* Canvas - Drop zone */}
+          {/* Canvas - Drop zone con larghezza POS-8370 */}
           <Card>
             <CardHeader>
-              <CardTitle>Canvas</CardTitle>
+              <div className="flex items-center justify-between">
+                <CardTitle>Canvas - Preview 1:1</CardTitle>
+                <div className="text-sm text-muted-foreground flex items-center gap-2">
+                  <span className="font-mono bg-muted px-2 py-1 rounded">80mm</span>
+                  <span>•</span>
+                  <span className="font-mono bg-muted px-2 py-1 rounded">576px</span>
+                  <span>•</span>
+                  <span>POS-8370</span>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <DndContext
@@ -304,27 +315,68 @@ export function TemplateBuilder() {
                 onDragStart={handleDragStart}
                 onDragEnd={handleDragEnd}
               >
-                <div className="min-h-96 border-2 border-dashed rounded-lg p-4 bg-white">
-                  {components.length === 0 ? (
-                    <div className="h-64 flex items-center justify-center text-muted-foreground">
-                      Trascina qui i componenti dalla palette
+                {/* Wrapper carta termica */}
+                <div className="flex justify-center">
+                  <div
+                    className="relative bg-white shadow-lg"
+                    style={{
+                      width: '576px',
+                      minHeight: '400px',
+                      border: '1px solid #e5e7eb',
+                      borderRadius: '4px'
+                    }}
+                  >
+                    {/* Indicatore bordo superiore carta */}
+                    <div className="absolute -top-6 left-0 right-0 flex items-center justify-center">
+                      <div className="text-xs text-muted-foreground bg-background px-2 py-1 rounded border">
+                        ↕ Inizio Stampa
+                      </div>
                     </div>
-                  ) : (
-                    <SortableContext
-                      items={components.map((c) => c.id)}
-                      strategy={verticalListSortingStrategy}
+
+                    {/* Bordo tratteggiato per indicare area stampabile */}
+                    <div
+                      className="min-h-96 border-2 border-dashed border-blue-300 rounded p-4"
+                      style={{ margin: '8px' }}
                     >
-                      {components.map((component) => (
-                        <SortableComponent
-                          key={component.id}
-                          component={component}
-                          onSelect={() => setSelectedComponent(component)}
-                          onDelete={() => deleteComponent(component.id)}
-                          isSelected={selectedComponent?.id === component.id}
-                        />
-                      ))}
-                    </SortableContext>
-                  )}
+                      {components.length === 0 ? (
+                        <div className="h-64 flex flex-col items-center justify-center text-muted-foreground gap-2">
+                          <p className="font-medium">Trascina qui i componenti dalla palette</p>
+                          <p className="text-xs">Larghezza stampa: 80mm (576px) - POS-8370</p>
+                        </div>
+                      ) : (
+                        <SortableContext
+                          items={components.map((c) => c.id)}
+                          strategy={verticalListSortingStrategy}
+                        >
+                          {components.map((component) => (
+                            <SortableComponent
+                              key={component.id}
+                              component={component}
+                              onSelect={() => setSelectedComponent(component)}
+                              onDelete={() => deleteComponent(component.id)}
+                              isSelected={selectedComponent?.id === component.id}
+                            />
+                          ))}
+                        </SortableContext>
+                      )}
+                    </div>
+
+                    {/* Righello laterale */}
+                    <div
+                      className="absolute left-0 top-0 bottom-0 w-4 bg-gradient-to-r from-slate-200 to-transparent flex flex-col justify-around text-xs"
+                      style={{ fontSize: '8px' }}
+                    >
+                      <div className="transform -rotate-90 text-slate-500">0mm</div>
+                    </div>
+
+                    {/* Righello laterale destro */}
+                    <div
+                      className="absolute right-0 top-0 bottom-0 w-4 bg-gradient-to-l from-slate-200 to-transparent flex flex-col justify-around text-xs"
+                      style={{ fontSize: '8px' }}
+                    >
+                      <div className="transform rotate-90 text-slate-500">80mm</div>
+                    </div>
+                  </div>
                 </div>
               </DndContext>
             </CardContent>
